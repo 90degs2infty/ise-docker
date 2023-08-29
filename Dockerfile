@@ -36,13 +36,14 @@ COPY xilinx-installer/Xilinx_ISE_DS_14.7_1015_1-1.tar \
     /tmp/
 
 # Pull in helper scripts
-ADD files /
+COPY src/xilinx-ise-install.config /tmp/install/config
+COPY src/install.exp /tmp/install.exp
 
 # Install ISE
 WORKDIR /tmp/install
 RUN tar -xvf /tmp/Xilinx_ISE_DS_14.7_1015_1-1.tar \
-    && TERM=xterm /tmp/setup \
-    && echo "source /opt/Xilinx/14.7/ISE_DS/settings64.sh" >> /root/.bashrc \
+    && TERM=xterm /tmp/install.exp \
+    && echo -e "\n# Source xilinx settings\nsource /opt/Xilinx/14.7/ISE_DS/settings64.sh\n" >> /root/.bashrc \
     && rm -rf /tmp/*
 
 # Basic dev tools and utilities
