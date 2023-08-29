@@ -1,49 +1,59 @@
 FROM ubuntu:14.04
 
-# basic packages
-RUN apt-get update && \
-    apt-get -y install git expect locales \
-    libglib2.0-0 libsm6 libxi6 libxrender1 libxrandr2 \
-    libfreetype6 libfontconfig1
+# Locale - make sure en_US.UTF-8 is available and the default locale
+RUN locale-gen en_US.UTF-8 \
+    && update-locale LANG=en_US.UTF-8 \
 
-# some essential tools..
-RUN apt-get update && \
-    apt-get -y install nano usbutils
+# Xilinx ISE's dependencies
+RUN apt-get update \
+    && apt-get install --no-install-recommends --no-install-suggests -y \
+    libfontconfig1 \
+    libfreetype6 \
+    libglib2.0-0 \
+    libsm6 \
+    # libx11-dev \
+    libxi6 \
+    libxrandr2 \
+    libxrender1 \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get autoremove --purge \
+    && apt-get clean
 
-# Set LOCALE to UTF8
-RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
-    locale-gen en_US.UTF-8 && \
-    /usr/sbin/update-locale LANG=en_US.UTF-8
+# Installation utilities
+# expect is required by the setup script
+RUN apt-get update \
+    && apt-get install --no-install-recommends --no-install-suggests -y \
+    expect \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get autoremove --purge \
+    && apt-get clean
 
+# Pull in ISE installer
+COPY xilinx-installer/Xilinx_ISE_DS_14.7_1015_1-1.tar \
+    xilinx-installer/Xilinx_ISE_DS_14.7_1015_1-3.zip.xz \
+    xilinx-installer/Xilinx_ISE_DS_14.7_1015_1-2.zip.xz \
+    xilinx-installer/Xilinx_ISE_DS_14.7_1015_1-4.zip.xz \
+    /tmp/
 
-RUN mkdir -p /tmp/install
-# adding xilinx installer
-COPY xilinx-installer/Xilinx_ISE_DS_14.7_1015_1-1.tar  /tmp
-COPY xilinx-installer/Xilinx_ISE_DS_14.7_1015_1-3.zip.xz  /tmp
-COPY xilinx-installer/Xilinx_ISE_DS_14.7_1015_1-2.zip.xz  /tmp
-COPY xilinx-installer/Xilinx_ISE_DS_14.7_1015_1-4.zip.xz  /tmp
-
-# adding scripts
+# Pull in helper scripts
 ADD files /
 
-RUN cd /tmp/install && \
-    tar xvf ../Xilinx_ISE_DS_14.7_1015_1-1.tar
+# Install ISE
+WORKDIR /tmp/install
+RUN tar -xvf /tmp/Xilinx_ISE_DS_14.7_1015_1-1.tar \
+    && TERM=xterm /tmp/setup \
+    && echo "source /opt/Xilinx/14.7/ISE_DS/settings64.sh" >> /root/.bashrc \
+    && rm -rf /tmp/*
 
-RUN cd /tmp/install && TERM=xterm /tmp/setup && \
-    cd
+# Basic dev tools and utilities
+RUN apt-get update \
+    && apt-get install --no-install-recommends --no-install-suggests -y \
+    git \
+    # usbutils \
+    vim \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get autoremove --purge \
+    && apt-get clean
 
-RUN rm -rf /tmp/install/
-RUN rm -rf /tmp/*
-
-RUN chmod 777 /tmp/
-
-RUN adduser --disabled-password --gecos '' ise
-USER ise
-WORKDIR /home/ise
-
-#defeat tips at startup
-RUN mkdir .config/Xilinx -p
-COPY ISE.conf .config/Xilinx
-
-#source ise settings
-RUN echo "source /opt/Xilinx/14.7/ISE_DS/settings64.sh" >> /home/ise/.bashrc
+WORKDIR /ise
+CMD [ "bash" ]
