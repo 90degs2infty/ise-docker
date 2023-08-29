@@ -1,5 +1,8 @@
 # xilinx-ise
 
+**Disclaimer: this README is not up to date!
+It needs a rewrite!**
+
 Xilinx ISE 14.7 docker.
 
 I included a `xilinx` shell script, which allows execution of e.g. `impact` inside the docker container. The current working directory is mounted to `/build`.
