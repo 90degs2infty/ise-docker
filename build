@@ -1,3 +1,0 @@
-#!/bin/bash
-
-docker build -t ise-14-7 .
