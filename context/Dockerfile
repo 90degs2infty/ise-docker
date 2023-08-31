@@ -33,7 +33,10 @@ COPY xilinx-installer/Xilinx_ISE_DS_14.7_1015_1-1.tar \
     xilinx-installer/Xilinx_ISE_DS_14.7_1015_1-3.zip.xz \
     xilinx-installer/Xilinx_ISE_DS_14.7_1015_1-2.zip.xz \
     xilinx-installer/Xilinx_ISE_DS_14.7_1015_1-4.zip.xz \
+    src/sha256sums.txt \
     /tmp/
+RUN cd /tmp \
+    && sha256sum -c sha256sums.txt
 
 # Pull in helper scripts
 COPY src/xilinx-ise-install.config /tmp/install/config
