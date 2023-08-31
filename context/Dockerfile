@@ -50,16 +50,6 @@ RUN tar -xvf /tmp/Xilinx_ISE_DS_14.7_1015_1-1.tar \
     && rm -rf /tmp/* \
     && mkdir -p /root/.Xilinx
 
-# Basic dev tools and utilities
-RUN apt-get update \
-    && apt-get install --no-install-recommends --no-install-suggests -y \
-    git \
-    # usbutils \
-    vim \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get autoremove --purge \
-    && apt-get clean
-
 COPY src/entrypoint.sh /usr/bin/
 WORKDIR /workspace
 ENTRYPOINT [ "/usr/bin/entrypoint.sh" ]
