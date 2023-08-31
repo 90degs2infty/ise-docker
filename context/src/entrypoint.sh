@@ -8,8 +8,6 @@ if [[ $# -eq 0 ]]; then
     echo
     echo "$(echo "$CMDS" | sort -fu | tr '\n' ' ')"
     echo
-    echo "=== Leaving the container ==="
-    echo
 
     exit 1
 fi
