@@ -43,7 +43,7 @@ COPY src/install.exp /tmp/install.exp
 WORKDIR /tmp/install
 RUN tar -xvf /tmp/Xilinx_ISE_DS_14.7_1015_1-1.tar \
     && TERM=xterm /tmp/install.exp \
-    && echo -e "\n# Source xilinx settings\nsource /opt/Xilinx/14.7/ISE_DS/settings64.sh\n" >> /root/.bashrc \
+    && printf "\n# Source xilinx settings\nsource /opt/Xilinx/14.7/ISE_DS/settings64.sh\n" >> /root/.bashrc \
     && rm -rf /tmp/* \
     && mkdir -p /root/.Xilinx
 
