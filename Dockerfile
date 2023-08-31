@@ -57,5 +57,6 @@ RUN apt-get update \
     && apt-get autoremove --purge \
     && apt-get clean
 
+COPY src/entrypoint.sh /usr/bin/
 WORKDIR /workspace
-CMD [ "bash" ]
+ENTRYPOINT [ "/usr/bin/entrypoint.sh" ]
