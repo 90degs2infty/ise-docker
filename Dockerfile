@@ -57,5 +57,5 @@ RUN apt-get update \
     && apt-get autoremove --purge \
     && apt-get clean
 
-WORKDIR /ise
+WORKDIR /workspace
 CMD [ "bash" ]
