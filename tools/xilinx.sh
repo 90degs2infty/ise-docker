@@ -64,4 +64,3 @@ podman run \
     -v $PROJECT_DIR:/workspace \
     xilinx-ise \
     "$@"
-    # -v $HOME/.Xauthority:/root/.Xauthority:ro \
