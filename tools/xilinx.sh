@@ -54,8 +54,6 @@ fi
 
 shift $((OPTIND - 1))
 
-printf "command passed into the container %s\n$*\n"
-
 podman run \
     -it \
     --rm \
@@ -64,5 +62,6 @@ podman run \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     -v $LICENSE_PATH:/root/.Xilinx/Xilinx.lic:ro \
     -v $PROJECT_DIR:/workspace \
-    xilinx-ise
+    xilinx-ise \
+    "$@"
     # -v $HOME/.Xauthority:/root/.Xauthority:ro \
