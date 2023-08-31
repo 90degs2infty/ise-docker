@@ -325,3 +325,12 @@ zlib1g/now 1:1.2.8.dfsg-1ubuntu1.1 amd64 [installed,local]
 ```
 
 Last but not least, the Xilinx ISE WebPACK suite is included.
+
+## Notes
+
+The image ships a custom entrypoint (the script available at [`context/src/entrypoint.sh`](context/src/entrypoint.sh)), which takes care of setting up all the ISE-required settings.
+I.e. it `source`s the setting script located inside the container at `/opt/Xilinx/14.7/ISE_DS/settings64.sh`.
+Since the image's purpose is to launch ISE commands, this is what the user expects to happen.
+
+Unfortunately, above script skrews up parts of the container (e.g. containerized `apt` will fail afterwards due to `apt: /opt/Xilinx/14.7/ISE_DS/ISE/lib/lin64/libstdc++.so.6: version 'GLIBCXX_3.4.9' not found (required by apt)`).
+If you ever happen to require access to the container _without_ the ISE-required settings applied, make sure to [overwrite the entrypoint](https://docs.podman.io/en/latest/markdown/podman-run.1.html#entrypoint-command-command-arg1) accordingly (e.g. using `--entrypoint=bash`).
