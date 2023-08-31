@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "=== Entered the container ==="
-
 if [[ $# -eq 0 ]]; then
     CMDS="$(find /opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/ -maxdepth 1 -perm -111 -type f -printf '%f\n')"
 
@@ -23,12 +21,4 @@ fi
 # explicitly.
 . /opt/Xilinx/14.7/ISE_DS/settings64.sh /opt/Xilinx/14.7/ISE_DS > /dev/null
 
-echo
-echo "Received command '$@'"
-echo
-
 "$@"
-
-echo
-echo "=== Leaving the container ==="
-echo
