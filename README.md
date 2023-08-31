@@ -41,6 +41,8 @@ Find a turn-key build script in [`tools/build.sh`](tools/build.sh).
 The script builds the container described in [`context/Dockerfile`](context/Dockerfile) and tags it `xilinx-ise`.
 
 First, copy all four installer files into `$repo/context/xilinx-installer`.
+Note: you really have to copy the files.
+Symlinking them via `ln -s` does not suffice!
 
 Then issue:
 
@@ -48,6 +50,9 @@ Then issue:
 > cd $repo
 > ./tools/build.sh
 ```
+
+This will install the Xilinx ISE WebPACK suite inside the container.
+The installers config is located at [`context/src/xilinx-ise-install.config`](context/src/xilinx-ise-install.config).
 
 ### Executing a containerized command
 
