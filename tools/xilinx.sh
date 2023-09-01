@@ -4,7 +4,7 @@ help() {
     echo
     echo "Run a containerized xilinx ISE command"
     echo
-    echo "Syntax: xilinx.sh [-h] -l <license file> -p <project dir> -- <xilinx command>"
+    echo "Syntax: ${0##*/} [-h] -l <license file> -p <project dir> -- <xilinx command>"
     echo
     echo "Options:"
     echo "-h                display this help message"
@@ -19,7 +19,7 @@ help() {
     echo "<xilinx command>  xilinx command to launch"
     echo
     echo "Example:"
-    echo "xilinx.sh -l ~/.Xilinx/Xilinx.lic -p . -- impact /workspace"
+    echo "${0##*/} -l ~/.Xilinx/Xilinx.lic -p . -- impact /workspace"
     echo
 }
 
