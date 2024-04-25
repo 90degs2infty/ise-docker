@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM docker.io/ubuntu:14.04
 
 # Locale - make sure en_US.UTF-8 is available and the default locale
 RUN locale-gen en_US.UTF-8 \
