@@ -40,6 +40,12 @@ while getopts ":hl:p:-" option; do
     esac
 done
 
+if [ -z "$LICENSE_PATH" ] || [ -z "$PROJECT_DIR" ]
+then
+    help
+    exit 1
+fi
+
 if [ ! -f "$LICENSE_PATH" ]
 then
     echo "license file '$LICENSE_PATH' does not exist"
@@ -54,12 +60,27 @@ fi
 
 shift $((OPTIND - 1))
 
-podman run \
+if which podman >/dev/null
+then
+    RUNNER=podman
+elif which docker >/dev/null
+then
+    RUNNER=docker
+else
+    echo "neither 'podman' nor 'docker' is available to run the container"
+    exit 1
+fi
+
+# Podman and Docker are drop-in compatible
+$RUNNER run \
     -it \
     --rm \
     --net=bridge \
+    --user $(id -u) \
     -e DISPLAY=$DISPLAY \
+    -e HOME=/root \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v $HOME/.Xauthority:/root/.Xauthority:rw \
     -v $LICENSE_PATH:/root/.Xilinx/Xilinx.lic:ro \
     -v $PROJECT_DIR:/workspace \
     xilinx-ise \

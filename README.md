@@ -19,7 +19,7 @@ In the following `$repo` refers to this repository's root directory.
   Version `3.4.4` is known to work - other versions may work, too.
 
   This repository used to use `docker` - so it should be doable using `docker`, too.
-  Feel free to try and adapt the scripts accordingly.
+  If `podman` is not installed, `docker` will be tried as a fallback.
 - `Xilinx ISE` installer files\
   Due to licensing, the installer files are not shipped alongside this repository.
   Instead, please head over to [xilinx.com](https://www.xilinx.com/downloadNav/vivado-design-tools/archive-ise.html) and download the necessary files.
