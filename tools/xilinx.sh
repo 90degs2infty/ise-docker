@@ -40,6 +40,12 @@ while getopts ":hl:p:-" option; do
     esac
 done
 
+if [ -z "$LICENSE_PATH" ] || [ -z "$PROJECT_DIR" ]
+then
+    help
+    exit 1
+fi
+
 if [ ! -f "$LICENSE_PATH" ]
 then
     echo "license file '$LICENSE_PATH' does not exist"
