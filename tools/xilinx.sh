@@ -60,7 +60,19 @@ fi
 
 shift $((OPTIND - 1))
 
-podman run \
+if which podman >/dev/null
+then
+    RUNNER=podman
+elif which docker >/dev/null
+then
+    RUNNER=docker
+else
+    echo "neither 'podman' nor 'docker' is available to run the container"
+    exit 1
+fi
+
+# Podman and Docker are drop-in compatible
+$RUNNER run \
     -it \
     --rm \
     --net=bridge \
