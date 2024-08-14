@@ -76,8 +76,11 @@ $RUNNER run \
     -it \
     --rm \
     --net=bridge \
+    --user $(id -u) \
     -e DISPLAY=$DISPLAY \
+    -e HOME=/root \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v $HOME/.Xauthority:/root/.Xauthority:rw \
     -v $LICENSE_PATH:/root/.Xilinx/Xilinx.lic:ro \
     -v $PROJECT_DIR:/workspace \
     xilinx-ise \
