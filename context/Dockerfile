@@ -1,4 +1,4 @@
-FROM docker.io/ubuntu:14.04
+FROM docker.io/ubuntu:14.04 as install
 
 # Locale - make sure en_US.UTF-8 is available and the default locale
 RUN locale-gen en_US.UTF-8 \
@@ -48,6 +48,10 @@ RUN tar -xvf /tmp/Xilinx_ISE_DS_14.7_1015_1-1.tar \
     && TERM=xterm /tmp/install.exp \
     && rm -rf /tmp/* \
     && mkdir -p /root/.Xilinx
+
+# Make another stage so the final image doesn't have the installer in the history
+FROM scratch AS run
+COPY --from=install / /
 
 COPY src/entrypoint.sh /usr/bin/
 WORKDIR /workspace
